@@ -1,0 +1,43 @@
+import { spawn, ChildProcessWithoutNullStreams } from "child_process";
+import chalk from "chalk";
+
+/**
+ * Class to manage the Minecraft server.
+ */
+export class ServerProcess {
+    private process: ChildProcessWithoutNullStreams
+
+    constructor() {
+        // Starts the Server
+        this.process = spawn("java", [
+            "-Xmx8G",
+            "-Xms4G",
+            "-jar",
+            "server.jar",
+            "nogui"
+        ]);
+
+        // STDOUT Handler
+        this.process.stdout.on("data", (data) => {
+            this.printServerLog(chalk.red(data.toString()));
+        });
+    }
+
+    /**
+     * Prints server log to console without interfering with user input.
+     * @param message Logs from the server.
+     */
+    private printServerLog(message: string) {
+        process.stdout.clearLine(0);
+        process.stdout.cursorTo(0);
+        process.stdout.write(message + "\n>> ");
+    }
+
+    /**
+     * Sends a command to the server.
+     * @param command Command to send.
+     */
+    public sendCommand(command: string) {
+        this.process.stdin.write(command + "\n");
+    }
+}
