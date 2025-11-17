@@ -17,7 +17,7 @@ export function createCommandHandler(comamnds: Map<string, any>) {
 
         const cmd = comamnds.get(cmdName);
         if (cmd) {
-            cmd.execute(args, server);
+            cmd.execute(server, args);
         } else {
             console.log(`Comando desconocido: ${cmdName}`);
             return;
@@ -27,7 +27,7 @@ export function createCommandHandler(comamnds: Map<string, any>) {
 
 export function loadCommands() {
     const commands = new Map<string, any>();
-    const commandsPath = path.join(__dirname, 'commands');
+    const commandsPath = path.join(__dirname, '../', 'commands');
     const files = fs.readdirSync(commandsPath)
 
     for (const file of files) {

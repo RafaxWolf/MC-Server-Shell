@@ -18,7 +18,20 @@ export function startMCServer(): ChildProcessWithoutNullStreams {
  * @param onLine Callback for each line of output.
  */
 export function serverOutput(server: ChildProcessWithoutNullStreams, onLine: (line: string) => void) {
-    server.stdout.on("data", (data: Buffer) => {
+    const printLine = (data: Buffer) => {
+        const text = data.toString().trim();
+
+        process.stdout.cursorTo(0);
+        process.stdout.clearLine(0);
+
+        onLine(text);
+
+        //process.stdout.write(">> ");
+    }
+    server.stdout.on("data", printLine);
+    server.stderr.on("data", printLine);
+
+    /* server.stdout.on("data", (data: Buffer) => {
         const text = data.toString().trim();
         onLine(text);
     })
@@ -26,7 +39,7 @@ export function serverOutput(server: ChildProcessWithoutNullStreams, onLine: (li
     server.stderr.on("data", (data: Buffer) => {
         const text = data.toString().trim();
         onLine(text);
-    })
+    }) */
 }
 
 /**
