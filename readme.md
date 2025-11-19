@@ -1,1 +1,6 @@
-### MC Server Shell
+## MC Server Shell
+Made in TypeScript
+
+
+### Author
+RafaxWolf

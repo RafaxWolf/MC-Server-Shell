@@ -1,7 +1,9 @@
 ### ===== Folders ===== ###
 build/
 node_modules/
+logs/
 
 ### ===== Files ===== ###
 nodemon.json
 *.txt
+*.log
