@@ -10,19 +10,24 @@ import { Command } from "./command-schema";
  * @param commands Todos los comandos cargados.
  * @returns El Command handler function.
  */
-export function createCommandHandler(commands: Map<string, any>) {
+export function createCommandHandler(prefix: string, commands: Map<string, any>) {
     return function handleCommand(command: string, server: any) {
 
-        //* Si el comando empieza con "!"
-        if (command.startsWith("!")) {
-            const parts = command.split(" "); //* Divide el comando en partes
-            const cmdName = parts[0]; //* Nombre del comando
+        //* Si el comando empieza con el prefix
+        if (command.startsWith(prefix)) {
+            const parts = command.trim().split(/\s+/); //* Divide el comando en partes (secuencias de espacios)
+            
+            // Elimina el prefix del nombre del comando
+            const rawName = parts[0].slice(prefix.length);
+            const cmdName = rawName.toLowerCase(); //* Nombre del comando sin prefix, en minúsculas
             const args = parts.slice(1); //* Argumentos del comando
-    
-            if(cmdName === "") return;
-    
+
+            if (!cmdName) return;
+
+            console.log(chalk.greenBright("[Debug]: ") + `Ejecutando comando interno: ${prefix}${cmdName} con argumentos: ${args.join(", ")}`);
+
             //* Comando interno: help
-            if(cmdName === "!help") {
+            if(cmdName === "help") {
                 console.log("\n[+] Comandos disponibles:\n");
     
                 for (const [name, cmd] of commands) {
@@ -34,7 +39,7 @@ export function createCommandHandler(commands: Map<string, any>) {
             }
     
             const cmd = commands.get(cmdName);
-            if (cmd) {
+            if(cmd) {
                 cmd.run(server, args);
             } else {
                 console.log(chalk.red(`[!] Comando desconocido: ${cmdName}`));
@@ -62,7 +67,7 @@ export function createCommandHandler(commands: Map<string, any>) {
 export function loadCommands() {
     const commands = new Map<string, any>();
     const commandsPath = path.join(__dirname, '..', 'commands');
-    console.log(chalk.green("[Debug]: ") + commandsPath);
+    console.log(chalk.greenBright("[Debug]: ") + commandsPath);
 
     const files = fs.readdirSync(commandsPath)
 

@@ -2,7 +2,7 @@ import path from "path";
 import fs from 'fs';
 
 // Define the logs directory path
-const logsDir = path.join(__dirname, '..', '..', 'logs');
+export const logsDir = path.join(__dirname, '..', '..', 'logs');
 
 // Asegurarse de que el directorio de logs exista
 if (!fs.existsSync(logsDir)) {
@@ -13,12 +13,13 @@ if (!fs.existsSync(logsDir)) {
  * Obtiene el nombre del archivo de log basado en la fecha actual.
  * @returns 
  */
-function getLogDate() {
+export function getLogDate() {
     const now = new Date();
     const year = now.getFullYear();
     const month = String(now.getMonth() + 1).padStart(2, '0');
     const day = String(now.getDate()).padStart(2, '0');
-    return path.join(logsDir, `serverLog-${year}-${month}-${day}.log`);
+    const logDate = `${year}-${month}-${day}`;
+    return path.join(logsDir, `serverLog-${logDate}.log`);
 }
 
 /**

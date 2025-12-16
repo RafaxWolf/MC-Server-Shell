@@ -5,7 +5,7 @@
   "main": "build/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "tsc && node build/index.js",
+    "start": "tsc && node .",
     "dev": "ts-node src/index.ts",
     "delbuild": "rm -rf build/"
   },
