@@ -8,3 +8,4 @@ nodemon.json
 *.txt
 *.log
 *.sh
+!start.sh
